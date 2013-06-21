@@ -1,0 +1,1 @@
+window.App = angular.module('Troll', ['ngResource'])

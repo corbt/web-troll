@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  author: MyString
+  title: MyString
+  reading_level: 9.99
+
+two:
+  author: MyString
+  title: MyString
+  reading_level: 9.99
