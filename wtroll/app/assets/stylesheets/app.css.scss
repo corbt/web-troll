@@ -1,0 +1,14 @@
+// Place all the styles related to the app controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+	background: image-url("background.jpg") no-repeat;
+	background-size: 100%;
+}
+
+#wrapper {
+	width: 980px;
+	margin: 30px auto 0 auto;
+	border: 5px solid black;
+}

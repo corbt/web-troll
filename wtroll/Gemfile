@@ -21,6 +21,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'slim'
+
 # Front end
 gem 'jquery-rails'
 gem 'angularjs-rails'
