@@ -1,12 +1,20 @@
 doctype html
-html
+html ng-app="Troll" ng-controller="PageController"
 	head
-		title Trollie
-		= stylesheet_link_tag 'app'
+		title ng-bind="title" Trollie
+		= stylesheet_link_tag 'application'
+		= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic'
+		
+		= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js'
+		= javascript_include_tag 'application'
 
-	body
+
+	body ng-controller="SearchController"
+		#background-attribution 
+			|Background courtesy of 
+			a href="http://www.flickr.com/photos/vblibrary/4993069751" vblibrary
 		#wrapper
-			#title
+			#header
 				h1 Trollie
 			#content
 				== yield

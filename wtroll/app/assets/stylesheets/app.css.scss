@@ -1,14 +1,136 @@
-// Place all the styles related to the app controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 body {
-	background: image-url("background.jpg") no-repeat;
-	background-size: 100%;
+	background: image-url("background.jpg") repeat-y;
+	background-size: cover;
+	font-family: 'PT Sans', sans-serif;
+
+	#background-attribution {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		a {
+			text-decoration: underline;
+			color: #333;
+		}
+	}
 }
 
+$border-radius: 20px;
+$wrapper-width: 980px;
+
 #wrapper {
-	width: 980px;
+	width: $wrapper-width;
 	margin: 30px auto 0 auto;
-	border: 5px solid black;
+	border: 2px solid rgb(117,117,117);
+
+	border-radius: $border-radius;
+	overflow: hidden;
+}
+
+#header {
+	@include linear-gradient(to bottom, #fb9d23 0%,#ffc578 76%);
+
+	h1 {
+		margin: 0;
+		padding: 15px 30px;
+	}
+}
+
+#content {
+	padding: 15px 30px;
+	background: rgba(255,255,255,.9)
+}
+
+#search-wrapper {
+	margin: 60px $wrapper-width/4 70px;
+
+	height: 40px;
+	width: $wrapper-width/2;
+
+	@include transition(0.6s cubic-bezier(0, 0, 0.58, 1) 0s);
+
+	&.results{
+		margin: 20px 0 40px 20px;
+	}
+
+	#search-box {
+		height: 100%;
+
+		border-radius: 8px;
+		border: 1px solid rgb(117,117,117);
+		overflow: hidden;
+		position: relative;
+		.search {
+			height: 100%;
+			width: 100%;
+			border: none;
+			padding-left: 15px;
+		}
+		.submit {
+			height: 100%;
+			border: none;
+			border-radius: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+			font-weight: bold;
+		}
+	}
+	#search-notice {
+		margin-left: 15px;
+		font-size: 10px;
+	}
+}
+
+#results {
+	margin: 0 0 15px 40px;
+	ul { margin: 0; }
+	li {
+		list-style-type: none;
+	}
+	.search-result {
+		padding: 7px 0 5px 10px;
+
+		.title {
+			font-size: 20px;
+			font-weight: bold;
+			a { color: #333; }
+		}
+		.author {
+
+		}
+		.isbn {
+			color: #888;
+		}
+		.reading-label {
+			text-transform: uppercase;
+			font-weight: bold;
+			font-size: 13px;
+		}
+		.level {
+			padding: 8px;
+			text-align: center;
+			font-weight: bold;
+			font-size: 40px;
+			color: #BE1B1B;
+		}
+
+		.left-side {
+			@include inline-block;
+			min-width: 40%;
+		}
+		.right-side {
+			@include inline-block;
+			vertical-align: top;
+		}
+		&.even { background: rgba(255,197,220,.2); }
+	}
+	#searching {
+		font-size: 40px;
+	}
+
+}
+
+img.loader {
+	margin: -10px 0 0 10px;
+	height: 40px;
 }

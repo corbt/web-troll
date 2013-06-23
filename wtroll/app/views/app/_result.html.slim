@@ -1,0 +1,15 @@
+li ng-repeat="result in results"
+	.search-result ng-class-even="'even'"
+		.left-side
+			.title 
+				a href="{{result.url}}"
+					|{{result.title}}
+			.author
+				a href="{{result.author_url}}"
+					|{{result.author}}
+			.isbn isbn: {{result.isbn}}
+		.right-side
+			.reading-label Reading Level
+			div ng-switch="!!result.readingLevel"
+				.level ng-switch-when="true" {{result.readingLevel}}
+				button.btn.calculate ng-switch-default='' ng-click="getReadingLevel(result)" Calculate

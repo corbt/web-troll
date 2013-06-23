@@ -1,1 +1,19 @@
-#test This is a slim file?
+#explanation ng-hide="searchState"
+	| Trollie uses a state of the art algorithm to compute the <strong>reading level</strong> of any children's book.  To get started, just search for a book!
+
+#search-wrapper ng-class="{results: searchState}"
+	#search-box
+		input.search name="search" placeholder="Search Books (Title, Author, ISBN, etc...)" ng-model="query"
+		input.submit.btn.btn-warning type="submit" value="Search" ng-click="runSearch()"
+	#search-notice 
+		|Search powered by 
+		a href="http://isbndb.com/" isbndb.com
+
+#results ng-show="searchState" ng-switch="searchState" 
+	#searching ng-switch-when="searching"
+		| Searching
+		= image_tag "loader.svg", class: "loader"
+
+	#search-failed ng-switch-when="error" The search appears to have failed.  We may have hit our API limit or the server may be down.  Please try again later!
+	ul ng-switch-when="success"
+		= render partial: 'result'
