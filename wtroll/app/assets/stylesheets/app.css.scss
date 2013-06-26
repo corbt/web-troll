@@ -1,10 +1,10 @@
 body {
-	background: image-url("background.jpg") repeat-y;
+	background: image-url("background.jpg") repeat-y fixed;
 	background-size: cover;
 	font-family: 'PT Sans', sans-serif;
 
 	#background-attribution {
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		right: 0;
 		a {
@@ -19,7 +19,7 @@ $wrapper-width: 980px;
 
 #wrapper {
 	width: $wrapper-width;
-	margin: 30px auto 0 auto;
+	margin: 30px auto;
 	border: 2px solid rgb(117,117,117);
 
 	border-radius: $border-radius;
@@ -116,7 +116,8 @@ $wrapper-width: 980px;
 
 		.left-side {
 			@include inline-block;
-			min-width: 40%;
+			width: 50%;
+			margin-right: 10px;
 		}
 		.right-side {
 			@include inline-block;

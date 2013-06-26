@@ -3,7 +3,7 @@
 
 #search-wrapper ng-class="{results: searchState}"
 	#search-box
-		input.search name="search" placeholder="Search Books (Title, Author, ISBN, etc...)" ng-model="query"
+		input.search name="search" placeholder="Search Books (Title, Author, ISBN, etc...)" ng-model="query" on-enter="runSearch()"
 		input.submit.btn.btn-warning type="submit" value="Search" ng-click="runSearch()"
 	#search-notice 
 		|Search powered by 

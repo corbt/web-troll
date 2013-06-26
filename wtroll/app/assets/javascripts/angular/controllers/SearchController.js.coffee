@@ -2,7 +2,12 @@ angular.module('Troll').controller 'SearchController', ($scope, $http) ->
 	$scope.runSearch = ->
 		$scope.searchState = 'searching'
 
-		$http.get("/books.json").success (data) ->
+		$http({
+			url: "/books.json"
+			method: "GET"
+			params: {query: $scope.query}
+			})
+		.success (data) ->
 			$scope.searchState = 'success'
 			$scope.results = data
 			$scope.$emit 'set_title', $scope.query+" | Trollie"
