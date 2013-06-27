@@ -5,7 +5,7 @@
 	#search-box
 		input.search name="search" placeholder="Search Books (Title, Author, ISBN, etc...)" ng-model="query" on-enter="runSearch()"
 		input.submit.btn.btn-warning type="submit" value="Search" ng-click="runSearch()"
-	#search-notice 
+	#search-notice ng-hide="searchState"
 		|Search powered by 
 		a href="http://isbndb.com/" isbndb.com
 

@@ -14,9 +14,6 @@ angular.module('Troll').controller 'SearchController', ($scope, $http) ->
 
 		.error () ->
 			$scope.searchState = 'error'
-			console.log "failed"
-
 
 	$scope.getReadingLevel = (book) ->
-		console.log book
 		book.readingLevel = 55
