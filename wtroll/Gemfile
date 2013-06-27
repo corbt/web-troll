@@ -8,6 +8,12 @@ gem 'rails', '4.0.0'
 gem 'sqlite3'
 gem 'mysql2'
 
+gem 'activeadmin', 				 github: 'gregbell/active_admin', branch: 'rails4'
+gem 'ransack',             github: 'ernie/ransack',         branch: 'rails-4'
+gem 'inherited_resources', github: 'josevalim/inherited_resources'
+gem 'protected_attributes' #necessary for AA, remove later!
+
+
 # HTML parsing
 gem 'nokogiri'
 gem 'httparty'

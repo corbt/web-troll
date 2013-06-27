@@ -1,9 +1,13 @@
 Wtroll::Application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
   get '/' => 'app#index'
   resource :books
+
+  get '/troll_admin' => 'app#login'
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
