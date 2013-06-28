@@ -1,5 +1,15 @@
 class Book < ActiveRecord::Base
-  attr_accessible :author, :reading_level, :title, :url, :author_url
+  has_many :isbns, dependent: :destroy
+  accepts_nested_attributes_for :isbns
 
-  has_many :isbns
+  def to_hash
+  	hash = {}
+  	hash[:author]					= self.author
+  	hash[:title]					= self.title
+  	hash[:url]						= self.url
+  	hash[:author_url] 		= self.author_url
+  	hash[:reading_level]	= self.reading_level
+  	hash[:isbn]						= self.isbns.first.number
+  	hash
+  end
 end

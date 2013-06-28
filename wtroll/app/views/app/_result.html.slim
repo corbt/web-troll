@@ -10,6 +10,6 @@ li ng-repeat="result in results"
 			.isbn isbn: {{result.isbn}}
 		.right-side
 			.reading-label Reading Level
-			div ng-switch="!!result.readingLevel"
-				.level ng-switch-when="true" {{result.readingLevel}}
+			div ng-switch="!!result.reading_level"
+				.level ng-switch-when="true" {{result.reading_level}}
 				button.btn.calculate ng-switch-default='' ng-click="getReadingLevel(result)" Calculate

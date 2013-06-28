@@ -16,4 +16,9 @@ angular.module('Troll').controller 'SearchController', ($scope, $http) ->
 			$scope.searchState = 'error'
 
 	$scope.getReadingLevel = (book) ->
-		book.readingLevel = 55
+		$http({
+			url: "/books/reading_level"
+			method: "GET"
+			params: {isbn: book.isbn}
+			})
+		book.reading_level = 8.7
