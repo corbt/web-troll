@@ -101,7 +101,8 @@ $wrapper-width: 980px;
 		.isbn {
 			color: #888;
 		}
-		.reading-label {
+		.reading-label, .error {
+			line-height: 11px;
 			text-transform: uppercase;
 			font-weight: bold;
 			font-size: 13px;
@@ -113,7 +114,10 @@ $wrapper-width: 980px;
 			font-size: 40px;
 			color: #BE1B1B;
 		}
-
+		.loader.small{
+			width: 40px;
+		}
+		.error { color: #BE1B1B; }
 		.left-side {
 			@include inline-block;
 			width: 50%;
@@ -121,17 +125,24 @@ $wrapper-width: 980px;
 		}
 		.right-side {
 			@include inline-block;
+			height: 100%;
 			vertical-align: top;
+			.reading-state {
+				@include display-box;
+				@include box-pack(center);
+				@include box-align(center);
+				height: 50px;
+				&:first-child {
+				}
+			}
 		}
 		&.even { background: rgba(255,197,220,.2); }
 	}
 	#searching {
 		font-size: 40px;
+		.loader {
+			margin: -10px 0 0 10px;
+			height: 40px;
+		}
 	}
-
-}
-
-img.loader {
-	margin: -10px 0 0 10px;
-	height: 40px;
 }

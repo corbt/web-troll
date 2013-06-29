@@ -1,15 +1,17 @@
-li ng-repeat="result in results"
+li ng-repeat="book in results"
 	.search-result ng-class-even="'even'"
 		.left-side
 			.title 
-				a href="{{result.url}}"
-					|{{result.title}}
+				a href="{{book.url}}"
+					|{{book.title}}
 			.author
-				a href="{{result.author_url}}"
-					|{{result.author}}
-			.isbn isbn: {{result.isbn}}
+				a href="{{book.author_url}}"
+					|{{book.author}}
+			.isbn isbn: {{book.isbn}}
 		.right-side
 			.reading-label Reading Level
-			div ng-switch="!!result.reading_level"
-				.level ng-switch-when="true" {{result.reading_level}}
-				button.btn.calculate ng-switch-default='' ng-click="getReadingLevel(result)" Calculate
+			div.reading-state ng-switch="book.readingState"
+				.level 																						ng-switch-when="found" {{book.reading_level}}
+				= image_tag "loader.svg", class: "loader small", 	ng_switch_when: "searching"
+				.error																						ng-switch-when="error" Error computing score
+				button.btn.calculate 															ng-switch-default='' ng-click="getReadingLevel(book)" Calculate
