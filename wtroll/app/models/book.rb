@@ -12,4 +12,18 @@ class Book < ActiveRecord::Base
   	hash[:isbn]						= self.isbns.first.number
   	hash
   end
+
+  def populate_from_wtroll
+    attributes = Book.find(1).attributes
+  end
+
+  def isbn
+    @isbn ||= isbns.first.number
+  end
+
+  def add_isbn (number)
+    isbns.new(number: number)
+  end
+  alias_method :isbn=, :add_isbn
+  
 end

@@ -50,8 +50,8 @@ ActiveRecord::Schema.define(version: 20130627024610) do
     t.string   "author"
     t.string   "title"
     t.decimal  "reading_level", precision: 10, scale: 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "url"
     t.string   "author_url"
   end
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(version: 20130627024610) do
   create_table "isbns", force: true do |t|
     t.string   "number"
     t.integer  "book_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

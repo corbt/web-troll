@@ -21,12 +21,12 @@ angular.module('Troll').controller 'SearchController', ($scope, $http) ->
 	$scope.getReadingLevel = (book) ->
 		book.readingState = 'searching'
 		$http({
-			url: "/books/reading_level"
-			method: "GET"
-			params: {isbn: book.isbn}
+			url: "/books.json"
+			method: "POST"
+			params: book
 			})
 		.success (data) ->
-			book.reading_level = data
+			book = data
 			book.readingState = 'found'
 		.error () ->
 			book.readingState = 'error'
