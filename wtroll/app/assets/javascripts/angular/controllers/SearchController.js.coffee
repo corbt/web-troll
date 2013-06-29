@@ -20,13 +20,31 @@ angular.module('Troll').controller 'SearchController', ($scope, $http) ->
 
 	$scope.getReadingLevel = (book) ->
 		book.readingState = 'searching'
+		if not book.id
+			postBook(book)
+
+		else
+			getReadingLevel(book)
+
+	postBook = (book) ->
 		$http({
 			url: "/books.json"
 			method: "POST"
-			params: book
+			data: book
 			})
 		.success (data) ->
-			book = data
-			book.readingState = 'found'
+			book.id = data.id
+			getReadingLevel(book) # TODO: switch to promise .then
+		.error ->
+		 	book.readingState = "error"
+
+	getReadingLevel = (book) ->
+		$http({
+			url: "/books/"+book.id+"/reading_level.json"
+			method: "GET"
+			})
+		.success (data) ->
+			book.reading_level = data.reading_level
+			book.readingState = "found"
 		.error () ->
-			book.readingState = 'error'
+			book.readingState = "error"

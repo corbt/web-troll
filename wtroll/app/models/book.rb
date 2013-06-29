@@ -10,11 +10,12 @@ class Book < ActiveRecord::Base
   	hash[:author_url] 		= self.author_url
   	hash[:reading_level]	= self.reading_level
   	hash[:isbn]						= self.isbns.first.number
+    hash[:id]							= self.id
   	hash
   end
 
-  def populate_from_wtroll
-    attributes = Book.find(1).attributes
+  def calculate_reading_level
+    self.reading_level = 7
   end
 
   def isbn
@@ -25,5 +26,5 @@ class Book < ActiveRecord::Base
     isbns.new(number: number)
   end
   alias_method :isbn=, :add_isbn
-  
+
 end

@@ -13,19 +13,18 @@ class BooksController < ApplicationController
 	end
 
 	def reading_level
-
-		@book = Book.new isbns: [Isbn.create(number:params[:isbn])]
-		# @book.populate_from_wtroll
+		@book = Book.find(params[:book_id])
+		@book.calculate_reading_level
 		@book.save
 	end
 
 	def create
 		@book = Book.new new_book_params
 		@book.save
-		render format: :json
+		render status: :created
 	end
-
-	private
+private
+	
 	def new_book_params
 		# should be .require :isbn, but apparently .require with this format
 		# is not currently supported.

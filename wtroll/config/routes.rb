@@ -6,7 +6,7 @@ Wtroll::Application.routes.draw do
 
   get '/' => 'app#index'
   resource :books
-  get '/books/reading_level' => 'books#reading_level'
+  get '/books/:book_id/reading_level' => 'books#reading_level'
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
