@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130627024610) do
+ActiveRecord::Schema.define(version: 20130630041132) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "resource_id",   null: false
@@ -49,9 +49,9 @@ ActiveRecord::Schema.define(version: 20130627024610) do
   create_table "books", force: true do |t|
     t.string   "author"
     t.string   "title"
-    t.decimal  "reading_level", precision: 10, scale: 0
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.decimal  "reading_level", precision: 4, scale: 1
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "url"
     t.string   "author_url"
   end

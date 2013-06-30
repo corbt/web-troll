@@ -15,7 +15,9 @@ class Book < ActiveRecord::Base
   end
 
   def calculate_reading_level
-    self.reading_level = 7
+    troll_dir = '/media/sf_shared/troll'
+    result = `cd #{troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{isbn}`
+    self.reading_level = Float(result).round 1
   end
 
   def isbn
