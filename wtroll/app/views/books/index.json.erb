@@ -1,1 +1,1 @@
-<%= raw @results.to_json %>
+<%= raw (@results.map{ |result| result.to_hash }).to_json %>

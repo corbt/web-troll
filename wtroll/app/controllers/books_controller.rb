@@ -4,10 +4,21 @@ class BooksController < ApplicationController
 	respond_to :json
 
 	def show
-		@results = ISBNdb.search_books(params[:query])
-		@results.map! do |result|
-			cached = Isbn.find_by_number(result[:isbn])
-			cached ? cached.book.to_hash : result
+		searcher = Openlibrary::Client.new
+
+		raw_results = searcher.search(params[:query])
+		@results = []
+		raw_results.each do |result|
+			if result.isbn #don't allow ISBN-less books into the results, can't use them anyway
+				cached = result && result.isbn && result.isbn.first ? Isbn.find_by_number(result.isbn.first) : nil
+				if not cached.nil?
+					@results << cached.book
+				else
+					book = Book.new
+					book.from_openlibrary result
+					@results << book
+				end
+			end
 		end
 		render :index
 	end
@@ -19,7 +30,8 @@ class BooksController < ApplicationController
 	end
 
 	def create
-		@book = Book.new new_book_params
+		@book = Book.new
+		@book.from_isbn new_book_params[:isbn]
 		@book.save
 		render status: :created
 	end
