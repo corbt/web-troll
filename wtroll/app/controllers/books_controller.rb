@@ -4,23 +4,34 @@ class BooksController < ApplicationController
 	respond_to :json
 
 	def show
+		@results = []
+		if /^\s*((\d{10}|\d{13})\s+)*(\d{10}|\d{13})?\s*$/ =~ params[:query]
+			search_isbns
+		else
+			search_books
+		end
+	end
+
+	def search_isbns
+		params[:query].split.each do |isbn|
+			@results << Book.from_isbn(isbn)
+		end
+	end
+
+	def search_books
 		searcher = Openlibrary::Client.new
 
-		raw_results = searcher.search(params[:query])
-		@results = []
+		raw_results = searcher.search(params[:query], 20)
 		raw_results.each do |result|
 			if result.isbn #don't allow ISBN-less books into the results, can't use them anyway
-				cached = result && result.isbn && result.isbn.first ? Isbn.find_by_number(result.isbn.first) : nil
+				cached = Isbn.find_by_number(result.isbn.first)
 				if not cached.nil?
 					@results << cached.book
 				else
-					book = Book.new
-					book.from_openlibrary result
-					@results << book
+					@results << Book.from_openlibrary(result)
 				end
 			end
 		end
-		render :index
 	end
 
 	def reading_level
@@ -30,8 +41,7 @@ class BooksController < ApplicationController
 	end
 
 	def create
-		@book = Book.new
-		@book.from_isbn new_book_params[:isbn]
+		@book = Book.from_isbn new_book_params[:isbn]
 		@book.save
 		render status: :created
 	end

@@ -14,26 +14,30 @@ class Book < ActiveRecord::Base
   	hash
   end
 
-  def from_isbn isbn
+  def self.from_isbn isbn
     client = Openlibrary::Client.new
     book_data = client.search isbn: isbn
-    from_openlibrary book_data[0]
+    test = book_data[0] ? from_openlibrary(book_data[0]) : nil
+    Rails.logger.info "TEST "+test.to_s
+    test
   end
 
-  def from_openlibrary book_obj
-    self.title          = book_obj.title
-    self.author         = book_obj.author_name[0]
-    self.author_url     = "http://openlibrary.org/authors/#{book_obj.author_key[0]}"
-    self.url            = "http://openlibrary.org/works/#{book_obj.key!}"
+  def self.from_openlibrary book_obj
+    book = self.new
+    book.title          = book_obj.title
+    book.author         = book_obj.author_name[0] if book_obj.author_name
+    book.author_url     = "http://openlibrary.org/authors/#{book_obj.author_key[0]}" if book_obj.author_key
+    book.url            = "http://openlibrary.org/works/#{book_obj.key!}"
     
     book_obj.isbn.each do |x|
-      add_isbn x
+      book.add_isbn x
     end
+    book
   end
 
   def calculate_reading_level
     troll_dir = '/media/sf_shared/troll'
-    result = `cd #{troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{isbn}`
+    result = 5.5#{}`cd #{troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{isbn}`
     self.reading_level = Float(result).round 1
   end
 
