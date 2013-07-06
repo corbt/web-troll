@@ -1,4 +1,10 @@
+html { height: 100%; }
 body {
+	@include box($pack: center, $align: center);
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 100%;
+	padding: 20px 0;
 	background: image-url("background.jpg") repeat-y fixed;
 	background-size: cover;
 	font-family: 'PT Sans', sans-serif;
@@ -16,17 +22,17 @@ body {
 
 $wrapper-width: 880px;
 
-.container {
-	margin: 30px auto;
+.wrapper {
+	width: $wrapper-width;
 	border: 1px solid rgb(117,117,117);
 
+	box-shadow: 0px 0px 7px rgba(121, 84, 70, 0.93);
 	border-radius: 3px;
-	overflow: hidden;
 }
 
 #header {
-	@include linear-gradient(to bottom, #fb9d23 0%,#ffc578 76%);
-	// @include clearfix;
+	width: 100%;
+	background: #FCA738;
 	@include display-box;
 	@include box-align(end);
 	h1 {
