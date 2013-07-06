@@ -10,6 +10,8 @@ Wtroll::Application.routes.draw do
   resource :books
   get '/books/:book_id/reading_level', to: 'books#reading_level'
 
+  mount Resque::Server, at: '/resque'
+
   get '/:custom_page', to: 'pages#custom_page'
 
   # Sample of regular route:

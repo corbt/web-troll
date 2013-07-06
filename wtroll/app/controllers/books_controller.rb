@@ -20,22 +20,19 @@ class BooksController < ApplicationController
 		searcher = Openlibrary::Client.new
 
 		raw_results = searcher.search(params[:query], 20)
-		raw_results.each do |result|
-			if result.isbn #don't allow ISBN-less books into the results, can't use them anyway
-				cached = Isbn.find_by_number(result.isbn.first)
-				if not cached.nil?
-					@results << cached.book
-				else
-					@results << Book.from_openlibrary(result)
-				end
+		raw_results.select{ |result| result.isbn }.each do |result|
+			cached = Isbn.find_by_number(result.isbn.first)
+			if not cached.nil?
+				@results << cached.book
+			else
+				@results << Book.from_openlibrary(result)
 			end
 		end
 	end
 
 	def reading_level
 		@book = Book.find(params[:book_id])
-		@book.calculate_reading_level
-		@book.save
+		@book.calculate_reading_level if @book.calculation_status.nil?
 	end
 
 	def create

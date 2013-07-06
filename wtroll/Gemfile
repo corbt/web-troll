@@ -13,11 +13,13 @@ gem 'ransack',							github: 'ernie/ransack',					branch: 'rails-4'
 gem 'inherited_resources',	github: 'josevalim/inherited_resources'
 gem 'protected_attributes' #necessary for AA, remove later!
 
-
 # HTML parsing
-gem 'nokogiri'
-gem 'httparty'
+# gem 'nokogiri'
+# gem 'httparty'
 gem 'openlibrary', 					github: 'kcorbitt/openlibrary', 	branch: 'rails4'
+
+# Queue
+gem 'resque', require: 'resque/server'
 
 # Assets
 gem 'bourbon'

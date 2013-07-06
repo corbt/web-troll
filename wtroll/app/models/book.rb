@@ -2,6 +2,8 @@ class Book < ActiveRecord::Base
   has_many :isbns, dependent: :destroy
   accepts_nested_attributes_for :isbns
 
+  include CalculationStatus
+
   def to_hash
   	hash = {}
   	hash[:author]					= self.author
@@ -36,9 +38,8 @@ class Book < ActiveRecord::Base
   end
 
   def calculate_reading_level
-    troll_dir = '/media/sf_shared/troll'
-    result = 5.5#{}`cd #{troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{isbn}`
-    self.reading_level = Float(result).round 1
+    update_attributes calculation_status: CalculationStatus::IN_PROGRESS
+    Resque.enqueue CalculateLevel, id
   end
 
   def isbn
