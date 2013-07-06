@@ -32,7 +32,7 @@ gem 'jbuilder'
 
 # templating
 gem 'slim'
-gem 'rabl'
+gem 'redcarpet'
 
 # Front end
 gem 'jquery-rails'

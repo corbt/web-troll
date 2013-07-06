@@ -14,24 +14,29 @@ body {
 	}
 }
 
-$border-radius: 20px;
-$wrapper-width: 980px;
+$wrapper-width: 880px;
 
-#wrapper {
-	width: $wrapper-width;
+.container {
 	margin: 30px auto;
-	border: 2px solid rgb(117,117,117);
+	border: 1px solid rgb(117,117,117);
 
-	border-radius: $border-radius;
+	border-radius: 3px;
 	overflow: hidden;
 }
 
 #header {
 	@include linear-gradient(to bottom, #fb9d23 0%,#ffc578 76%);
-
+	// @include clearfix;
+	@include display-box;
+	@include box-align(end);
 	h1 {
+		@include box-flex(1);
 		margin: 0;
 		padding: 15px 30px;
+	}
+	#nav{
+		margin-right: 18px;
+		.spacer { margin: 0 5px; }
 	}
 }
 

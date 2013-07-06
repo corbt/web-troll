@@ -1,0 +1,5 @@
+- if url_for(only_path: true) == nav_link[:link]
+	strong
+		= nav_link[:title]
+- else
+	= link_to nav_link[:title], nav_link[:link]

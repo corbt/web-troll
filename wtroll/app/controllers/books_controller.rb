@@ -1,5 +1,3 @@
-require 'ISBNdb'
-
 class BooksController < ApplicationController
 	respond_to :json
 

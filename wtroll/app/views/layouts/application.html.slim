@@ -13,8 +13,13 @@ html ng-app="Troll" ng-controller="PageController"
 		#background-attribution 
 			|Background courtesy of 
 			a href="http://www.flickr.com/photos/vblibrary/4993069751" vblibrary
-		#wrapper
+		.container
 			#header
 				h1 Trollie
+				#nav
+					- links = [	{title: "Search", link: "/search"},
+											{title: "About", link: "/about"}, 
+										 	{title: "API", link: "/api"} ]
+					= render partial: 'nav_link', collection: links, spacer_template: 'nav_link_spacer'
 			#content
 				== yield

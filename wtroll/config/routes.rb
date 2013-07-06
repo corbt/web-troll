@@ -4,9 +4,13 @@ Wtroll::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  get '/' => 'app#index'
+  get '/',        to: redirect('/search')
+  get '/search',  to: 'app#index'
+  
   resource :books
-  get '/books/:book_id/reading_level' => 'books#reading_level'
+  get '/books/:book_id/reading_level', to: 'books#reading_level'
+
+  get '/:custom_page', to: 'pages#custom_page'
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
