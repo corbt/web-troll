@@ -5,23 +5,28 @@ class Book < ActiveRecord::Base
   include CalculationStatus
 
   def to_hash
-  	hash = {}
-  	hash[:author]					= self.author
-  	hash[:title]					= self.title
-  	hash[:url]						= self.url
-  	hash[:author_url] 		= self.author_url
-  	hash[:reading_level]	= self.reading_level
-  	hash[:isbn]						= self.isbn
-    hash[:id]							= self.id
-  	hash
+    hash = {}
+    hash[:author]             = self.author
+    hash[:title]              = self.title
+    hash[:url]                = self.url
+    hash[:author_url]         = self.author_url
+    hash[:reading_level]      = self.reading_level
+    hash[:calculation_status] = self.calculation_status
+    hash[:isbn]               = self.isbn
+    hash[:id]                 = self.id
+    hash
   end
 
   def self.from_isbn isbn
-    client = Openlibrary::Client.new
-    book_data = client.search isbn: isbn
-    test = book_data[0] ? from_openlibrary(book_data[0]) : nil
-    Rails.logger.info "TEST "+test.to_s
-    test
+    cached = Isbn.find_by_number isbn
+    if cached
+      @book = cached.book
+    else
+      client = Openlibrary::Client.new
+      book_data = client.search isbn: isbn
+      @book = book_data[0] ? from_openlibrary(book_data[0]) : nil
+    end
+    @book
   end
 
   def self.from_openlibrary book_obj
@@ -37,9 +42,15 @@ class Book < ActiveRecord::Base
     book
   end
 
+
+
   def calculate_reading_level
-    update_attributes calculation_status: CalculationStatus::IN_PROGRESS
-    Resque.enqueue CalculateLevel, id
+    if self.calculation_status.nil?
+      update_attributes calculation_status: CalculationStatus::IN_PROGRESS
+      Resque.enqueue CalculateLevel, id
+    elsif self.calculation_status == Book::CalculationStatus::IN_PROGRESS && Time.now-self.updated_at > 20.minutes
+      Resque.enqueue CalculateLevel, id
+    end
   end
 
   def isbn

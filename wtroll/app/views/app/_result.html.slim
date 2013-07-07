@@ -10,8 +10,8 @@ li ng-repeat="book in results"
 			.isbn isbn: {{book.isbn}}
 		.right-side
 			.reading-label Reading Level
-			div.reading-state ng-switch="book.readingState"
-				.level 																						ng-switch-when="found" {{book.reading_level}}
-				= image_tag "loader.svg", class: "loader small", 	ng_switch_when: "searching"
-				.error																						ng-switch-when="error" Error computing score
-				button.btn.calculate 															ng-switch-default='' ng-click="getReadingLevel(book)" Calculate
+			div.reading-state ng-switch="book.calculation_status"
+				= image_tag "loader.svg", class: "loader small", 	ng_switch_when: 1
+				.level 								ng-switch-when=2 {{book.reading_level}}
+				.error 								ng-switch-when=3 Not Enough Information
+				button.btn.calculate 	ng-switch-default='' ng-click="getReadingLevel(book)" Calculate

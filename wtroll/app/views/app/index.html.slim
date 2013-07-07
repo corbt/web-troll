@@ -12,5 +12,6 @@
 		= image_tag "loader.svg", class: "loader"
 
 	#search-failed ng-switch-when="error" The search appears to have failed.  We may have hit our API limit or the server may be down.  Please try again later!
+	#no-results ng-switch-when="noResults" Sorry, no results found
 	ul ng-switch-when="success"
 		= render partial: 'result'

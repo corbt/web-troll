@@ -31,8 +31,28 @@ class BooksController < ApplicationController
 	end
 
 	def reading_level
-		@book = Book.find(params[:book_id])
-		@book.calculate_reading_level if @book.calculation_status.nil?
+		if params[:book_id]
+			@book = Book.find(params[:book_id])
+			@book.calculate_reading_level
+		elsif params[:isbn]
+			@book = Book.from_isbn params[:isbn]
+			@book.calculate_reading_level
+		elsif params[:isbns]
+			@books = {}
+			params[:isbns].split.each do |isbn|
+				book = Book.from_isbn(isbn)
+				if book
+					book.calculate_reading_level
+					@books[isbn] = {reading_level: book.reading_level, calculation_status: book.calculation_status}
+				else
+					@books[isbn] = {error: "book not found"}
+				end
+			end
+		end
+
+		if @book && @book.calculation_status == Book::CalculationStatus::ERROR
+			render status: :bad_gateway
+		end
 	end
 
 	def create
@@ -41,7 +61,6 @@ class BooksController < ApplicationController
 		render status: :created
 	end
 private
-	
 	def new_book_params
 		# should be .require :isbn, but apparently .require with this format
 		# is not currently supported.
