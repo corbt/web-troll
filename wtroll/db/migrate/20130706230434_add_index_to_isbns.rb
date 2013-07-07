@@ -1,5 +1,5 @@
 class AddIndexToIsbns < ActiveRecord::Migration
   def change
-  	add_index :isbns, :number, unique: true
+  	add_index :isbns, :number
   end
 end

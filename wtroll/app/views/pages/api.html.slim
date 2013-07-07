@@ -1,10 +1,68 @@
+- @title = "API"
 markdown:
-	API Usage
-	---------
-	
-		test.each do |x|
-			puts x
-		end
-	
+	### Overview
+	Trollie has a single unauthenticated API endpoint that can be used to access the reading-level engine.
 
-	I'm using the API.
+	The endpoint is `/books/reading_level.json`, and it accepts one of two parameters:
+	
+	* `isbn` accepts a single ISBN-10 or ISBN-13
+	* `isbns` accepts a list of space-separated ISBN-10 or ISBN-13s
+
+	### Data returned
+	The API will always return a JSON object reporting the status of the request.
+
+	#### ISBN
+	A request with the parameter `isbn` will return a JSON object of the form
+
+	`{"reading_level":0.4,"calculation_status":2}`
+
+	#### ISBNs
+	A request with the parameter `isbns` will return a JSON object of the form
+
+	
+		{
+			"0723206481":{"reading_level":0.4,"calculation_status":2},
+			"9780789414571":{"reading_level":6.1,"calculation_status":2},
+			"1903845483":{"reading_level":4.6,"calculation_status":2}
+		}
+
+	Each requested ISBN is returned with a `calculation_status` field and a `reading_level` if available.
+
+	#### Calculation Statuses
+	* `1`: Reading level calculation in progress.  Continue polling.
+	* `2`: Reading level successfully calculated.  `reading_level` will contain the calculated number.
+	* `3`: Error in reading level calculation.  This typically means that the algorithm was unable to find enough information to calculate a meaningful reading level.
+
+	#### Errors
+	In case of an error (`calculation_status: 3`), the server will return an `error` field containing further details.
+
+	### Examples
+	Since the API can be accessed over unauthenticated HTTP requests, you can explore it in your browser.  Here are some examples to get you started.
+
+	#### Successful Request
+	`#{books_reading_level_url}.json?isbn=9780757937064`
+	
+		{"calculation_status":2,"reading_level":5.0}
+
+	#### Unregistered ISBN
+	`#{books_reading_level_url}.json?isbn=0671707362`
+
+		{"calculation_status":3,"error":"No book was found on Openlibrary with this ISBN"}
+
+	#### Too-short ISBN
+	`#{books_reading_level_url}.json?isbn=1234567`
+
+		{"calculation_status":3,"error":"Malformatted ISBN: ISBN must be 10- or 13-digit number"}
+
+	#### Multi-ISBN Request
+	`#{books_reading_level_url}.json?isbns=0477072127+9780195866346+9780573693618+12345`
+
+		{
+			"0477072127":{"calculation_status":1,"reading_level":null},
+			"9780195866346":{"calculation_status":2,"reading_level":3.3},
+			"9780573693618":{"calculation_status":2,"reading_level":4.4},
+			"12345":{
+				"calculation_status":3,
+				"error":"Malformatted ISBN: ISBN must be 10- or 13-digit number"
+			}
+		}

@@ -1,8 +1,10 @@
 class Book < ActiveRecord::Base
   has_many :isbns, dependent: :destroy
   accepts_nested_attributes_for :isbns
+  attr_accessor :error
 
   include CalculationStatus
+  include Errors
 
   def to_hash
     hash = {}
@@ -18,13 +20,25 @@ class Book < ActiveRecord::Base
   end
 
   def self.from_isbn isbn
-    cached = Isbn.find_by_number isbn
-    if cached
-      @book = cached.book
+    if not /^(\d{10}|\d{13})$/ =~ isbn
+      @book = Book.new
+      @book.calculation_status = 3
+      @book.error = Errors::BAD_FORMAT
     else
-      client = Openlibrary::Client.new
-      book_data = client.search isbn: isbn
-      @book = book_data[0] ? from_openlibrary(book_data[0]) : nil
+      cached = Isbn.find_by_number isbn
+      if cached
+        @book = cached.respond_to?(:first) ? cached.first.book : cached.book
+      else
+        client = Openlibrary::Client.new
+        book_data = client.search isbn: isbn
+        if book_data[0]
+          @book = from_openlibrary(book_data[0])
+        else
+          @book = Book.new
+          @book.calculation_status = 3
+          @book.error = Errors::NOT_FOUND
+        end
+      end
     end
     @book
   end
@@ -42,14 +56,26 @@ class Book < ActiveRecord::Base
     book
   end
 
-
-
   def calculate_reading_level
     if self.calculation_status.nil?
       update_attributes calculation_status: CalculationStatus::IN_PROGRESS
       Resque.enqueue CalculateLevel, id
     elsif self.calculation_status == Book::CalculationStatus::IN_PROGRESS && Time.now-self.updated_at > 20.minutes
       Resque.enqueue CalculateLevel, id
+    end
+  end
+
+  def reading_hash
+    if self.calculation_status == 3
+      {
+        calculation_status: 3,
+        error: @error ? @error : Errors::NO_DATA
+      }
+    else
+      {
+        calculation_status: self.calculation_status,
+        reading_level: reading_level ? reading_level.to_f : nil
+      }
     end
   end
 

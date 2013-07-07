@@ -1,13 +1,18 @@
+- if @title
+	- page_title = "#{@title} | Trollie"
+- else
+	- page_title = "Trollie"
+
 doctype html
 html ng-app="Troll" ng-controller="PageController"
 	head
-		title ng-bind="title" Trollie
+		title ng-bind="title" #{page_title}
 		= stylesheet_link_tag 'application'
 		= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic'
 		
-		= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js'
-		= javascript_include_tag 'application'
-
+		= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js' if not @title
+		= javascript_include_tag 'application' if not @title
+		
 
 	body ng-controller="SearchController"
 		#background-attribution 

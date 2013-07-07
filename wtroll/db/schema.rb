@@ -64,6 +64,6 @@ ActiveRecord::Schema.define(version: 20130706230434) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "isbns", ["number"], name: "index_isbns_on_number", unique: true, using: :btree
+  add_index "isbns", ["number"], name: "index_isbns_on_number", using: :btree
 
 end

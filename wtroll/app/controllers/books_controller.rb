@@ -41,17 +41,9 @@ class BooksController < ApplicationController
 			@books = {}
 			params[:isbns].split.each do |isbn|
 				book = Book.from_isbn(isbn)
-				if book
-					book.calculate_reading_level
-					@books[isbn] = {reading_level: book.reading_level, calculation_status: book.calculation_status}
-				else
-					@books[isbn] = {error: "book not found"}
-				end
+				book.calculate_reading_level
+				@books[isbn] = Book.from_isbn(isbn).reading_hash
 			end
-		end
-
-		if @book && @book.calculation_status == Book::CalculationStatus::ERROR
-			render status: :bad_gateway
 		end
 	end
 
