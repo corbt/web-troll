@@ -40,22 +40,22 @@ markdown:
 	Since the API can be accessed over unauthenticated HTTP requests, you can explore it in your browser.  Here are some examples to get you started.
 
 	#### Successful Request
-	`#{books_reading_level_url}.json?isbn=9780757937064`
+	[#{isbn 9780757937064}](#{isbn 9780757937064})
 	
 		{"calculation_status":2,"reading_level":5.0}
 
 	#### Unregistered ISBN
-	`#{books_reading_level_url}.json?isbn=0671707362`
+	[#{isbn "0671707362"}](#{isbn "0671707362"})
 
 		{"calculation_status":3,"error":"No book was found on Openlibrary with this ISBN"}
 
 	#### Too-short ISBN
-	`#{books_reading_level_url}.json?isbn=1234567`
+	[#{isbn 1234567}](#{isbn 1234567})
 
 		{"calculation_status":3,"error":"Malformatted ISBN: ISBN must be 10- or 13-digit number"}
 
 	#### Multi-ISBN Request
-	`#{books_reading_level_url}.json?isbns=0477072127+9780195866346+9780573693618+12345`
+	[#{isbns '0477072127+9780195866346+9780573693618+12345'}](#{isbns '0477072127+9780195866346+9780573693618+12345'})
 
 		{
 			"0477072127":{"calculation_status":1,"reading_level":null},
