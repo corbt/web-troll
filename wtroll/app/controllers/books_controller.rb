@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-	respond_to :json
+	respond_to :json, only: :reading_level
 
 	def show
 		@results = []
@@ -31,20 +31,8 @@ class BooksController < ApplicationController
 	end
 
 	def reading_level
-		if params[:book_id]
-			@book = Book.find(params[:book_id])
-			@book.calculate_reading_level
-		elsif params[:isbn]
-			@book = Book.from_isbn params[:isbn]
-			@book.calculate_reading_level
-		elsif params[:isbns]
-			@books = {}
-			params[:isbns].split.each do |isbn|
-				book = Book.from_isbn(isbn)
-				book.calculate_reading_level
-				@books[isbn] = Book.from_isbn(isbn).reading_hash
-			end
-		end
+		@book = Book.find(params[:book_id])
+		@book.calculate_reading_level
 	end
 
 	def create

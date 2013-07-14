@@ -1,6 +1,9 @@
 class Book < ActiveRecord::Base
   has_many :isbns, dependent: :destroy
   accepts_nested_attributes_for :isbns
+
+  belongs_to :user
+
   attr_accessor :error
 
   include CalculationStatus
@@ -56,9 +59,9 @@ class Book < ActiveRecord::Base
     book
   end
 
-  def calculate_reading_level
+  def calculate_reading_level user
     if self.calculation_status.nil?
-      update_attributes calculation_status: CalculationStatus::IN_PROGRESS
+      update_attributes calculation_status: CalculationStatus::IN_PROGRESS, user: user
       Resque.enqueue CalculateLevel, id
     elsif self.calculation_status == Book::CalculationStatus::IN_PROGRESS && Time.now-self.updated_at > 20.minutes
       Resque.enqueue CalculateLevel, id

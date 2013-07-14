@@ -7,6 +7,7 @@ gem 'rails', '4.0.0'
 
 gem 'sqlite3'
 gem 'mysql2'
+gem 'resque'
 
 gem 'activeadmin',					github: 'gregbell/active_admin',	branch: 'rails4'
 gem 'ransack',							github: 'ernie/ransack',					branch: 'rails-4'

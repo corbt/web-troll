@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130706230434) do
+ActiveRecord::Schema.define(version: 20130714034901) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "resource_id",   null: false
@@ -50,20 +50,33 @@ ActiveRecord::Schema.define(version: 20130706230434) do
     t.string   "author"
     t.string   "title"
     t.decimal  "reading_level",      precision: 4, scale: 1
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "url"
     t.string   "author_url"
+    t.integer  "user_id"
     t.integer  "calculation_status"
   end
+
+  add_index "books", ["user_id"], name: "index_books_on_user_id", using: :btree
 
   create_table "isbns", force: true do |t|
     t.string   "number"
     t.integer  "book_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "isbns", ["number"], name: "index_isbns_on_number", using: :btree
+
+  create_table "users", force: true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "api_key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["api_key"], name: "index_users_on_api_key", using: :btree
 
 end
