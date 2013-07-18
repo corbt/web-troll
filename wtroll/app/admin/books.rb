@@ -1,12 +1,18 @@
 ActiveAdmin.register Book do
 	menu priority: 1
 
+	collection_action :calculate_batch
+	collection_action :process_calculate_batch, method: :post
+	action_item only: :index do
+		link_to "Calculate Batch", calculate_batch_admin_books_path
+	end
+
 	index do
 		column :title
 		column :author
 		column :reading_level
 		column "ISBNs" do |book|
-			book.isbns.map &:number
+			book.isbns.limit(10).map &:number
 		end
 		column :calculation_status
 		column "API requester", :user
@@ -26,6 +32,20 @@ ActiveAdmin.register Book do
 					isbn.number
 				end
 			end
+		end
+	end
+	controller do
+		def calculate_batch
+			render 'calculate_batch'
+		end
+		def process_calculate_batch
+			params[:isbns].split(/,|\s/).select{|x| x.match(/\d/)}.each do |isbn|
+				book = Book.from_isbn(isbn)
+				book.calculate_reading_level
+			end
+
+			flash[:notice] = "Calculating reading levels.  This may take a while."
+			redirect_to action: :index
 		end
 	end
 end

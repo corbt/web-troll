@@ -59,7 +59,7 @@ class Book < ActiveRecord::Base
     book
   end
 
-  def calculate_reading_level user
+  def calculate_reading_level user=nil
     if self.calculation_status.nil?
       update_attributes calculation_status: CalculationStatus::IN_PROGRESS, user: user
       Resque.enqueue CalculateLevel, id
