@@ -3,6 +3,8 @@ class CalculateLevel
 	@queue = :calculate
 
 	def self.perform book_id
+		puts @@troll_dir
+		puts Rails.env
 		book = Book.find book_id
 		result = `cd #{@@troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{book.isbn}`
 		if /\d{10}|\d{13}/ =~ result
