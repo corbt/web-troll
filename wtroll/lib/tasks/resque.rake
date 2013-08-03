@@ -49,7 +49,10 @@ namespace :resque do
     else
       syscmd = "kill -s QUIT #{pids.join(' ')}"
       puts "Running syscmd: #{syscmd}"
-      system(syscmd)
+      begin
+        system(syscmd)
+      rescue StandardError
+      end
     end
   end
   

@@ -37,9 +37,17 @@ namespace :deploy do
   end
 end
 
+namespace :resque do 
+	task :restart_workers do
+		run <<-CMD.compact
+		  cd -- #{latest_release.shellescape} &&
+		  #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} resque:restart_workers
+		CMD
+	end
+end
+
 Cape do
 	mirror_rake_tasks :secrets
-	mirror_rake_tasks :resque
 end
 
 after 'deploy:restart', 'secrets:generate', 'deploy:assets:precompile', 'resque:restart_workers', 'unicorn:reload' 
