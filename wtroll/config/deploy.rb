@@ -39,6 +39,7 @@ end
 
 Cape do
 	mirror_rake_tasks :secrets
+	mirror_rake_tasks :resque
 end
 
-after 'deploy:restart', 'secrets:generate', 'deploy:assets:precompile', 'unicorn:reload' 
+after 'deploy:restart', 'secrets:generate', 'deploy:assets:precompile', 'resque:restart_workers', 'unicorn:reload' 

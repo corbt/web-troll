@@ -1,6 +1,7 @@
 package :troll do 
 	requires :fs, :java, :troll_dbs
 
+	# rsync -v -r -e ssh /media/sf_shared/troll deploy@troll:/data/apps/troll
 	transfer '/media/sf_shared/troll', '/data/apps', recursive: true
 
 	verify { has_directory "/data/apps/troll" }
