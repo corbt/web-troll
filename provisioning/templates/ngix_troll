@@ -1,0 +1,35 @@
+upstream com_troll_unicorn {
+    server unix:/data/apps/site/current/tmp/unicorn.sock fail_timeout=0;
+}
+
+server {
+    listen 80;
+    server_name troll.cs.byu.edu;
+
+    access_log /var/log/nginx/com.example-access.log;
+    error_log  /var/log/nginx/com.example-error.log;
+
+    keepalive_timeout 5;
+
+    root /data/apps/site/current/public;
+
+    try_files $uri/index.html $uri.html $uri @app;
+
+    location @app {
+        proxy_set_header X-Forwarded_for $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://com_troll_unicorn;
+    }
+
+    location ~ ^/(assets)/ {
+        gzip_static on;
+        expires max;
+        add_header Cache-Control public;
+    }
+
+    error_page 500 502 503 504 /500.html;
+    location = /500.html {
+        root /data/apps/site/current/public;
+    }
+}

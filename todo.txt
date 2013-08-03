@@ -1,5 +1,21 @@
-App architecture
-	Models
-		Book
-		User
-		
+Provisioning must:
+	install redis-server
+	install mysql
+	install rvmc/ruby 2.0.0
+	install/configure nginx (unicorn)
+
+	copy troll app files
+	copy trollie app files
+	copy relevant db dumps
+
+	rake db:create
+
+Deploy must:
+	rsync troll app files
+	git trollie app files
+
+	rake resque:restart_workers
+	rake secrets:generate
+	rake db:migrate
+
+	rake assets:precompile

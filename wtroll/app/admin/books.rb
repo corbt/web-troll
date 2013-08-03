@@ -14,7 +14,14 @@ ActiveAdmin.register Book do
 		column "ISBNs" do |book|
 			book.isbns.limit(10).map &:number
 		end
-		column :calculation_status
+		column "Calculation Status" do |book|
+			case book.calculation_status
+			when nil 	then ""
+			when 1 		then "In Progress"
+			when 2		then "Success"
+			when 3 		then "Error"
+			end
+		end
 		column "API requester", :user
 		default_actions
 	end

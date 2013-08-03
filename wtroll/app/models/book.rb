@@ -83,7 +83,7 @@ class Book < ActiveRecord::Base
   end
 
   def isbn
-    @isbn ||= isbns.first.number
+    @isbn ||= isbns.first.number if isbns
   end
 
   def add_isbn (number)
