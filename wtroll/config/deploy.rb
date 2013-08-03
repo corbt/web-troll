@@ -2,6 +2,7 @@ require '../conf'
 require 'capistrano/ext/multistage'
 require 'capistrano-unicorn'
 require 'bundler/capistrano'
+require 'cape'
 
 Dir[File.join(File.dirname(__FILE__),"deploy","recipes","**","*.rb")].each{ |f| require f }
 
@@ -36,5 +37,8 @@ namespace :deploy do
   end
 end
 
+Cape do
+	mirror_rake_tasks :secrets
+end
 
-after 'deploy:restart', 'unicorn:reload', 'deploy:assets:precompile'
+after 'deploy:restart', 'unicorn:reload', 'deploy:assets:precompile', 'secrets:generate'
