@@ -1,5 +1,9 @@
 package :mysql, provides: :database do
-	apt 'mysql-server', sudo: true
+	apt 'mysql-server libmysql-ruby libmysqlclient-dev', sudo: true
 
-	verify { has_apt 'mysql-server' }
+	verify do
+		has_apt 'mysql-server'
+		has_apt 'libmysql-ruby'
+		has_apt 'libmysqlclient-dev'
+	end
 end
