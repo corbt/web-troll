@@ -15,9 +15,13 @@ class ApiController < ApplicationController
 
 	private
 	def validate_key
+		unless params[:key]
+			render json: {error: "No API key detected. Key must be passed as a URL parameter, eg. '/reading_level?key=XXXX'"}
+			return
+		end
 		@user = User.find_by_api_key params[:key]
 		unless @user
-			render json: {error: "Your key appears to have failed. Visit the API docs for information on key generation and usage."}
+			render json: {error: "Your key appears to have failed. Visit the API docs at '/api' for information on key generation and usage."}
 		end
 	end
 end

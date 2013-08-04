@@ -10,7 +10,7 @@ Wtroll::Application.routes.draw do
   resource :books
   get '/books/:book_id/reading_level', to: 'books#reading_level'
 
-  get '/api/v1/isbns/:isbns/reading_level', to: 'api#reading_level', defaults: {format: 'json'}
+  get '/api/v1/isbns/:isbns/reading_level', to: 'api#reading_level', defaults: {format: 'json'}, path_names: { get: 'asdf' }
 
   mount Resque::Server, at: '/resque'
 

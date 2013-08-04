@@ -25,3 +25,23 @@ deployment do
     default_run_options[:pty] = true
   end
 end
+
+# Provisioning must:
+#   install redis-server
+#   install mysql
+#   install rvmc/ruby 2.0.0
+#   install/configure nginx (unicorn)
+#   install jre
+
+#   copy relevant db dumps
+#   create/assign /data/apps
+
+# Deploy must:
+#   rsync troll app files
+#   git trollie app files
+
+#   rake resque:restart_workers
+#   rake secrets:generate
+#   rake db:migrate
+
+#   rake assets:precompile

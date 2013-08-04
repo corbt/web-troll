@@ -56,7 +56,8 @@ namespace :resque do
   
   desc "Start workers"
   task :start_workers => :environment do
-    run_worker("*", 2)
+    number = {"development" => 2, "production" => 4}
+    run_worker("*", number[Rails.env])
   end
  
   desc "Restart scheduler"

@@ -1,9 +1,6 @@
 module MarkdownHelper
-	def isbn arg
-		"#{books_reading_level_url}.json?isbn=#{arg}"
-	end
-
 	def isbns arg
-		"#{books_reading_level_url}.json?isbns=#{arg}"
+		"#{request.protocol}#{request.host_with_port}/api/v1/isbns/#{arg}/reading_level?key=[your_key]"
 	end
+	alias_method :isbn, :isbns
 end
