@@ -9,7 +9,7 @@ end
 
 package :create_user do
   runner "useradd deploy -s /bin/bash -m -d /home/deploy", sudo: true
-  runner "echo \"deploy:#{password}\" | chpasswd", sudo: true
+  runner "su && echo \"deploy:#{password}\" | chpasswd", sudo: true
   runner "echo \"deploy ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers", sudo: true
   runner "apt-get update", sudo: true
 
@@ -24,7 +24,7 @@ deployment do
   delivery :capistrano do 
     default_run_options[:pty] = true
     role :app, Site::CONFIG[:server]
-    set :user, "kyle"
+    set :user, "trollie"
     logger.level = Capistrano::Logger::TRACE
   end
 end

@@ -1,6 +1,6 @@
 package :nginx, provides: :server do
 	requires :nginx_dependencies
-	runner "add-apt-repository ppa:nginx/stable", sudo: true
+	runner "add-apt-repository --yes ppa:nginx/stable", sudo: true
 	runner "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 00A6F0A3C300EE8C", sudo: true
 	runner "apt-get update", sudo: true
 	apt "nginx", sudo: true
