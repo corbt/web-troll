@@ -10,7 +10,7 @@ gem 'mysql2'
 gem 'resque'
 
 gem 'activeadmin',					github: 'gregbell/active_admin',	branch: 'rails4'
-gem 'ransack',							github: 'ernie/ransack',					branch: 'rails-4'
+# gem 'ransack',							github: 'ernie/ransack',					branch: 'rails-4'
 gem 'inherited_resources',	github: 'josevalim/inherited_resources'
 gem 'protected_attributes' #necessary for AA, remove later!
 
@@ -24,8 +24,8 @@ gem 'resque', require: 'resque/server'
 
 # Assets
 gem 'bourbon'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'sass-rails', '~> 4.0.0'
+gem 'coffee-rails'
+gem 'sass-rails'
 
 # Javascript compression
 gem 'uglifier', '>= 1.0.3'
