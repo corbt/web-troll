@@ -56,7 +56,7 @@ namespace :resque do
   
   desc "Start workers"
   task :start_workers => :environment do
-    number = {"development" => 2, "production" => 4}
+    number = {"development" => 2, "production" => 8}
     run_worker("*", number[Rails.env])
   end
  
