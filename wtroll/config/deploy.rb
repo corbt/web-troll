@@ -46,8 +46,14 @@ namespace :resque do
 	end
 end
 
+namespace :db do
+  task :migrate do
+    "#{rake} db:migrate"
+  end
+end
+
 Cape do
 	mirror_rake_tasks :secrets
 end
 
-after 'deploy:restart', 'secrets:generate', 'deploy:assets:precompile', 'resque:restart_workers', 'unicorn:reload' 
+after 'deploy:restart', 'db:migrate', 'secrets:generate', 'deploy:assets:precompile', 'resque:restart_workers', 'unicorn:reload' 
