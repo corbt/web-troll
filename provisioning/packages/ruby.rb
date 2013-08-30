@@ -16,7 +16,7 @@ package :ruby_build do
 end
 
 package :ruby_essentials do 
-  apt "build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev checkinstall libgdbm-dev", sudo: true
+  apt "build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev checkinstall libgdbm-dev libsqlite3-dev", sudo: true
 end
 
 package :ruby_gems do
