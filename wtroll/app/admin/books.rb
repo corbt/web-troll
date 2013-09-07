@@ -8,6 +8,7 @@ ActiveAdmin.register Book do
 	end
 
 	index do
+		selectable_column
 		column :title
 		column :author
 		column :reading_level
