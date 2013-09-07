@@ -23,11 +23,11 @@ class Book < ActiveRecord::Base
   end
 
   def self.from_isbn isbn
-    if not /^(\d{10}|\d{13})$/ =~ isbn
-      @book = Book.new
-      @book.calculation_status = 3
-      @book.error = Errors::BAD_FORMAT
-    else
+    # if not /^(\d{10}|\d{13})$/ =~ isbn
+    #   @book = Book.new
+    #   @book.calculation_status = 3
+    #   @book.error = Errors::BAD_FORMAT
+    # else
       cached = Isbn.find_by_number isbn
       if cached
         @book = cached.respond_to?(:first) ? cached.first.book : cached.book
@@ -42,7 +42,7 @@ class Book < ActiveRecord::Base
           @book.error = Errors::NOT_FOUND
         end
       end
-    end
+    # end
     @book
   end
 
