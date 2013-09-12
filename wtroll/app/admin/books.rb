@@ -47,6 +47,7 @@ ActiveAdmin.register Book do
 		column :title
 		column :author
 		column("isbns") { |book| book.isbns.map{|x| x.number}.join("|") }
+		column :reading_level
 		column :created_at
 		column :updated_at
 		column :calculation_status
