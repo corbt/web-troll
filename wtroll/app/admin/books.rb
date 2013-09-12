@@ -42,6 +42,15 @@ ActiveAdmin.register Book do
 			end
 		end
 	end
+	csv do
+		column :id
+		column :title
+		column :author
+		column("isbns") { |book| book.isbns.map{|x| x.number}.join("|") }
+		column :created_at
+		column :updated_at
+		column :calculation_status
+	end
 	controller do
 		def calculate_batch
 			render 'calculate_batch'
