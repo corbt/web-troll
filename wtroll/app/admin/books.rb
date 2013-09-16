@@ -3,8 +3,12 @@ ActiveAdmin.register Book do
 
 	collection_action :calculate_batch
 	collection_action :process_calculate_batch, method: :post
+	collection_action :clear_errored_books, method: :post
 	action_item only: :index do
 		link_to "Calculate Batch", calculate_batch_admin_books_path
+	end
+	action_item only: :index do
+		link_to "Clear Errored Books", clear_errored_books_admin_books_path, method: :post
 	end
 
 	index do
@@ -63,6 +67,11 @@ ActiveAdmin.register Book do
 			end
 
 			flash[:notice] = "Calculating reading levels.  This may take a while."
+			redirect_to action: :index
+		end
+		def clear_errored_books
+			Book.destroy_all(calculation_status: 3)
+			flash[:notice] = "All books with errors dropped from database"
 			redirect_to action: :index
 		end
 	end
