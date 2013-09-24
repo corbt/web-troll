@@ -1,13 +1,14 @@
 require '../conf'
 require 'capistrano/ext/multistage'
 require 'capistrano-unicorn'
+require 'capistrano-resque'
 require 'bundler/capistrano'
 require 'cape'
 
 Dir[File.join(File.dirname(__FILE__),"deploy","recipes","**","*.rb")].each{ |f| require f }
 
 
-set :application, 	"corbt"
+set :application, 	"wtroll"
 set :repository,  	Site::CONFIG[:repository]
 set :scm,						:git
 
@@ -26,6 +27,8 @@ set :default_stage, "production"
 
 set :use_sudo, false
 
+set :workers, {"*" => 4}
+
 namespace :deploy do
   namespace :assets do
     task :precompile, :except => { :no_release => true } do
@@ -35,15 +38,6 @@ namespace :deploy do
       CMD
     end
   end
-end
-
-namespace :resque do 
-	task :restart_workers do
-		run <<-CMD.compact
-		  cd -- #{latest_release.shellescape} &&
-		  #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} resque:restart_workers
-		CMD
-	end
 end
 
 namespace :db do
@@ -56,4 +50,4 @@ Cape do
 	mirror_rake_tasks :secrets
 end
 
-after 'deploy:restart', 'db:migrate', 'secrets:generate', 'deploy:assets:precompile', 'resque:restart_workers', 'unicorn:reload' 
+after 'deploy:restart', 'db:migrate', 'secrets:generate', 'deploy:assets:precompile', 'resque:restart', 'unicorn:reload' 
