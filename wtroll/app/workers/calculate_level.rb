@@ -6,9 +6,17 @@ class CalculateLevel
 		puts @@troll_dir
 		puts Rails.env
 		book = Book.find book_id
-		result = `cd #{@@troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{book.isbn}`
-		if /\d{10}|\d{13}/ =~ result
-			reading_level = Float(result).round 1
+
+		reading_level = nil
+
+		book.isbns.each do |isbn|
+			result = `cd #{@@troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{isbn.number}`
+			if /\d{10}|\d{13}/ =~ result
+				reading_level = Float(result).round 1
+				break
+			end
+		end
+		if reading_level
 			book.update_attributes 	reading_level: reading_level, 
 															calculation_status: Book::CalculationStatus::COMPLETE
 		else
