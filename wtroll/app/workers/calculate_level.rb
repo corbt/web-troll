@@ -9,11 +9,17 @@ class CalculateLevel
 
 		reading_level = nil
 
-		book.isbns.each do |isbn|
-			result = `cd #{@@troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{isbn.number}`
+		samples = book.isbns[0...4]
+		Rails.logger.debug samples.map &:number
+
+		samples.each do |isbn|
+			sanitized_number = isbn.number.gsub /[^[:alnum:]]/,""
+			result = `cd #{@@troll_dir} && java -classpath "bin:lib/*" execute.CommandLine #{sanitized_number}`
+			Rails.logger.debug result
 			if /\d{10}|\d{13}/ =~ result
-				reading_level = Float(result).round 1
-				break
+				if reading_level == nil || Float(result) > reading_level
+					reading_level = Float(result).round 1
+				end
 			end
 		end
 		if reading_level
