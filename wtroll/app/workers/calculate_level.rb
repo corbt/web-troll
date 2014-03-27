@@ -9,7 +9,7 @@ class CalculateLevel
 
 		reading_level = nil
 
-		samples = book.isbns[0...4]
+		samples = book.isbns.sample(4)
 		Rails.logger.debug samples.map &:number
 
 		samples.each do |isbn|
