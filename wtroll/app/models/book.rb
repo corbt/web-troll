@@ -53,30 +53,31 @@ class Book < ActiveRecord::Base
     book.author_url     = "http://openlibrary.org/authors/#{book_obj.author_key[0]}" if book_obj.author_key
     book.url            = "http://openlibrary.org/works/#{book_obj.key!}"
 
-    main_isbn  = nil
-    isbns = []
+    temp_isbns = []
     book_obj.isbn.each do |x|
-      if main_isbn == nil
-        main_isbn = x
+      if x =~ /\A(978[01].{6}|[01].{9})/
+        temp_isbns << x
       end
-      if x =~ /\A(978[01]\d{6}|[01]\d{9})/
-        isbns << x
-      end
+    end
+
+    if temp_isbns.size == 0
+      return nil
     end
 
     require 'net/http'
     require 'rexml/document'
 
-    url = 'http://www.librarything.com/api/thingISBN/'.concat(main_isbn)
+    url = 'http://www.librarything.com/api/thingISBN/'.concat(temp_isbns[0])
     xml_data = Net::HTTP.get_response(URI.parse(url)).body
     doc = REXML::Document.new(xml_data)
     doc.elements.each('idlist/isbn') do |isbn|
-      if isbn.text =~ /\A(978[01]\d{6}|[01]\d{9})/
-        isbns << isbn.text
+      if isbn.text =~ /\A(978[01].{6}|[01].{9})/
+        temp_isbns << isbn.text
+        Rails.logger.debug(isbn.text)
       end
     end
-    
-    isbns.uniq.each do |x|
+
+    temp_isbns.uniq.each do |x|
       book.add_isbn x
     end
     book

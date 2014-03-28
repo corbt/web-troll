@@ -25,7 +25,10 @@ class BooksController < ApplicationController
 			if not cached.nil?
 				@results << cached.book
 			else
-				@results << Book.from_openlibrary(result)
+				temp = Book.from_openlibrary(result)
+				if temp != nil
+					@results << Book.from_openlibrary(result)
+				end
 			end
 		end
 	end
